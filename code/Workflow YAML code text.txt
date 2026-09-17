@@ -1,0 +1,172 @@
+resources:
+  jobs:
+    CCU063_03_master:
+      name: CCU063_03 master
+      schedule:
+        quartz_cron_expression: 18 15 4 * * ?
+        timezone_id: UTC
+        pause_status: PAUSED
+      tasks:
+        - task_key: CCU063_03-D01-parameters
+          notebook_task:
+            notebook_path: CCU063_03-D01-parameters
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_codes_loader
+          notebook_task:
+            notebook_path: CCU063_03_codes_loader
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_maternity_estpregstart
+          notebook_task:
+            notebook_path: CCU063_03_maternity_estpregstart
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_maternity_fields
+          notebook_task:
+            notebook_path: CCU063_03_maternity_fields
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_maternity_matrix
+          notebook_task:
+            notebook_path: CCU063_03_maternity_matrix
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_maternity_assembly
+          depends_on:
+            - task_key: CCU063_03-D01-parameters
+            - task_key: CCU063_03_maternity_estpregstart
+            - task_key: CCU063_03_maternity_fields
+            - task_key: CCU063_03_maternity_matrix
+          notebook_task:
+            notebook_path: CCU063_03_maternity_assembly
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D02_interpreter_cohort_alone
+          depends_on:
+            - task_key: CCU063_03_maternity_assembly
+            - task_key: CCU063_03_codes_loader
+          notebook_task:
+            notebook_path: CCU063_03_D02_interpreter_cohort_alone
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D03_maternity_interpreter_link
+          depends_on:
+            - task_key: CCU063_03_D02_interpreter_cohort_alone
+          notebook_task:
+            notebook_path: CCU063_03_D03_maternity_interpreter_link
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D04_maternity_interpreter_demo_link
+          depends_on:
+            - task_key: CCU063_03_D03_maternity_interpreter_link
+          notebook_task:
+            notebook_path: CCU063_03_D04_maternity_interpreter_demo_link
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D05_-_MSDS_folic_acid_link
+          depends_on:
+            - task_key: CCU063_03_D04_maternity_interpreter_demo_link
+          notebook_task:
+            notebook_path: CCU063_03_D05 - MSDS folic acid link
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D06_-_MSDS_overseas_charging
+          depends_on:
+            - task_key: CCU063_03_D05_-_MSDS_folic_acid_link
+          notebook_task:
+            notebook_path: CCU063_03_D06 - MSDS overseas charging
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D07_-_MSDS_complex_social_factors
+          depends_on:
+            - task_key: CCU063_03_D06_-_MSDS_overseas_charging
+          notebook_task:
+            notebook_path: CCU063_03_D07 - MSDS complex social factors
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D08_-_MSDS_gest_age_booking
+          depends_on:
+            - task_key: CCU063_03_D07_-_MSDS_complex_social_factors
+          notebook_task:
+            notebook_path: CCU063_03_D08 - MSDS gest_age_booking
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D09_-_MSDS_prev_live_births
+          depends_on:
+            - task_key: CCU063_03_D08_-_MSDS_gest_age_booking
+          notebook_task:
+            notebook_path: CCU063_03_D09 - MSDS prev_live_births
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D10_-_MSDS_prev_stillbirth
+          depends_on:
+            - task_key: CCU063_03_D09_-_MSDS_prev_live_births
+          notebook_task:
+            notebook_path: CCU063_03_D10 - MSDS prev_stillbirth
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D11_-_MSDS_prev_earlyloss
+          depends_on:
+            - task_key: CCU063_03_D10_-_MSDS_prev_stillbirth
+          notebook_task:
+            notebook_path: CCU063_03_D11 - MSDS prev_earlyloss
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D12_-_GDPPR_healthcare_use_link
+          depends_on:
+            - task_key: CCU063_03_D11_-_MSDS_prev_earlyloss
+          notebook_task:
+            notebook_path: CCU063_03_D12 - GDPPR healthcare use link
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D13_-_HES_AE_attendance
+          depends_on:
+            - task_key: CCU063_03_D12_-_GDPPR_healthcare_use_link
+          notebook_task:
+            notebook_path: CCU063_03_D13 - HES A+E attendance
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D15_-_GDPPR_healthcare_code_exploration
+          depends_on:
+            - task_key: CCU063_03_D12_-_GDPPR_healthcare_use_link
+          notebook_task:
+            notebook_path: CCU063_03_D15 - GDPPR healthcare code exploration
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D16_-_GDPPR_healthcare_code_exploration_before_cutting_out_codes
+          depends_on:
+            - task_key: CCU063_03_D12_-_GDPPR_healthcare_use_link
+          notebook_task:
+            notebook_path: CCU063_03_D16 - GDPPR healthcare code exploration before cutting
+              out codes
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D14_-_demographic_exploration
+          depends_on:
+            - task_key: CCU063_03_D11_-_MSDS_prev_earlyloss
+          notebook_task:
+            notebook_path: CCU063_03_D14 - demographic exploration
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D03b_Exploring_when_interpreter_code_recorded
+          depends_on:
+            - task_key: CCU063_03_D02_interpreter_cohort_alone
+          notebook_task:
+            notebook_path: CCU063_03_D03b_Exploring when interpreter code recorded
+            source: GIT
+          existing_cluster_id: 
+        - task_key: CCU063_03_D03c_Exploring_when_interpreter_code_recorded_studypopulation
+          depends_on:
+            - task_key: CCU063_03_D02_interpreter_cohort_alone
+          notebook_task:
+            notebook_path: CCU063_03_D03c_Exploring when interpreter code
+              recorded_studypopulation
+            source: GIT
+          existing_cluster_id: 
+      git_source:
+        git_url: https://gitlab.sde.digital.nhs.uk//ccu063_03.git
+        git_provider: gitLab
+        git_branch: main
+      queue:
+        enabled: true
